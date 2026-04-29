@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Transparent Login</title>
+    <title>Login</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -21,32 +21,41 @@
 
     <div class="login-card" id="loginCard">
         <div class="form-side">
-            <h1>Sign Up</h1>
+            <h1 class="theme-text">Sign Up</h1>
             <form id="loginForm">
                 <div class="input-box">
-                    <label>Email</label>
+                    <label class="theme-text">Email</label>
                     <input type="email" id="email" required placeholder="example@mail.com">
-                    <i class="fas fa-envelope"></i>
+                    <i class="fas fa-envelope theme-text"></i>
                 </div>
                 <div class="input-box">
-                    <label>Password</label>
+                    <label class="theme-text">Password</label>
                     <input type="password" id="password" required placeholder="******">
-                    <i class="fas fa-lock"></i>
+                    <i class="fas fa-lock theme-text"></i>
                 </div>
-                <button type="submit" class="btn-submit">Sign Up</button>
+                <button type="submit" class="btn-submit theme-bg">Sign Up</button>
             </form>
-            <p class="footer-text">Already Have Account? <span class="login-link">Login</span></p>
+            <p class="footer-text">Already Have Account? <span class="login-link theme-text">Login</span></p>
         </div>
         <div class="image-side">
-            <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&q=80&w=500" alt="Plant Decoration">
+            <img id="panelImage" src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&q=80&w=500" alt="Panel Photo">
         </div>
     </div>
 
     <div class="controls">
         <input type="file" id="fileInput" accept="image/*,video/*" hidden>
-        <button onclick="document.getElementById('fileInput').click()"><i class="fas fa-folder-open"></i> Pilih File</button>
-        <button onclick="saveSettings()"><i class="fas fa-save"></i> Save Background</button>
-        <button onclick="toggleDesktop()"><i class="fas fa-desktop"></i> Desktop Mode</button>
+        <button onclick="document.getElementById('fileInput').click()"><i class="fas fa-image"></i> BG</button>
+
+        <input type="file" id="panelFileInput" accept="image/*" hidden>
+        <button onclick="document.getElementById('panelFileInput').click()"><i class="fas fa-camera"></i> Panel Img</button>
+
+        <div class="color-picker-wrapper">
+            <input type="color" id="rgbPicker" value="#39FF14">
+            <i class="fas fa-palette"></i>
+        </div>
+
+        <button onclick="saveAll()"><i class="fas fa-save"></i> Save All</button>
+        <button onclick="toggleDesktop()"><i class="fas fa-desktop"></i> Desktop</button>
     </div>
 
     <script src="script.js"></script>

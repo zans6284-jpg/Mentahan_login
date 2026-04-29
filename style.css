@@ -1,69 +1,67 @@
 :root {
-    --neon-green: #39FF14;
+    --main-color: #39FF14; /* Warna default */
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
-body {
-    height: 100vh; overflow: hidden;
-    display: flex; justify-content: center; align-items: center;
-    background: #000;
-}
+body { height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; background: #000; }
 
-/* Background Layer */
 #bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
 #bg-container img, #bg-container video { width: 100%; height: 100%; object-fit: cover; }
-.overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: -1; }
+.overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: -1; }
 
-/* Lampu */
-.lamp-container { position: absolute; top: 0; right: 10%; z-index: 10; display: flex; flex-direction: column; align-items: center; }
-.rope { width: 3px; height: 120px; background: #222; }
-.handle { width: 18px; height: 18px; background: #444; border-radius: 50%; cursor: pointer; transition: 0.1s; }
-.lamp-rope:active { transform: translateY(10px); }
-.light-bulb { width: 50px; height: 50px; background: #333; border-radius: 50%; margin-top: -5px; transition: 0.4s; }
+/* Theme Classes */
+.theme-text { color: var(--main-color) !important; transition: 0.3s; }
+.theme-bg { background: var(--main-color) !important; color: black !important; transition: 0.3s; }
 
-/* Trigger Lampu */
-body.light-on .light-bulb { background: #fff; box-shadow: 0 0 60px 20px rgba(255, 255, 255, 0.4); }
-body.light-on .login-card { opacity: 1; transform: scale(1); pointer-events: all; }
-
-/* Login Panel Transparan (Glassmorphism) */
+/* Login Card Transparan */
 .login-card {
     display: flex; width: 800px; height: 450px;
-    background: rgba(255, 255, 255, 0.1); /* Transparan */
-    backdrop-filter: blur(15px); /* Efek Blur */
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 30px; overflow: hidden;
-    opacity: 0; transform: scale(0.9);
-    transition: 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity: 0; transform: scale(0.8);
+    transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     pointer-events: none;
 }
 
-.form-side { flex: 1.2; padding: 50px; color: white; }
-.form-side h1 { margin-bottom: 20px; font-size: 32px; font-weight: 600; }
+body.light-on .login-card { opacity: 1; transform: scale(1); pointer-events: all; }
 
-.image-side { flex: 1; background: rgba(0, 0, 0, 0.4); padding: 25px; display: flex; align-items: center; justify-content: center; }
+.form-side { flex: 1.2; padding: 50px; color: white; }
+.image-side { flex: 1; background: rgba(0,0,0,0.3); padding: 20px; }
 .image-side img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; }
 
-/* Input Fields */
-.input-box { position: relative; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.5); }
-.input-box label { font-size: 12px; color: var(--neon-green); text-transform: uppercase; letter-spacing: 1px; }
+.input-box { position: relative; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.3); }
+.input-box label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; }
 .input-box input { width: 100%; background: none; border: none; padding: 10px 0; color: white; outline: none; }
-.input-box i { position: absolute; right: 0; bottom: 12px; font-size: 14px; color: var(--neon-green); opacity: 0.8; }
 
 .btn-submit {
-    width: 100%; padding: 14px; background: var(--neon-green); color: black;
-    border: none; border-radius: 30px; cursor: pointer; font-weight: bold;
-    box-shadow: 0 0 15px var(--neon-green); transition: 0.3s;
+    width: 100%; padding: 14px; border: none; border-radius: 30px; 
+    cursor: pointer; font-weight: bold; box-shadow: 0 0 15px var(--main-color);
 }
-.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 0 25px var(--neon-green); }
 
-.footer-text { margin-top: 20px; font-size: 13px; opacity: 0.7; text-align: center; }
-.login-link { color: var(--neon-green); cursor: pointer; text-decoration: underline; }
-
-/* Tombol Kontrol */
-.controls { position: fixed; bottom: 30px; display: flex; gap: 15px; }
+/* Control Panel & Color Picker */
+.controls { position: fixed; bottom: 25px; display: flex; gap: 12px; align-items: center; }
 .controls button {
-    background: rgba(0,0,0,0.6); color: var(--neon-green); border: 1px solid var(--neon-green);
-    padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 12px;
+    background: rgba(0,0,0,0.7); color: white; border: 1px solid rgba(255,255,255,0.2);
+    padding: 8px 15px; border-radius: 10px; cursor: pointer; transition: 0.3s; font-size: 12px;
 }
-.controls button:hover { background: var(--neon-green); color: black; }
+.controls button:hover { border-color: var(--main-color); color: var(--main-color); }
+
+.color-picker-wrapper {
+    position: relative; width: 40px; height: 40px; 
+    border-radius: 50%; overflow: hidden; border: 2px solid white;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+#rgbPicker {
+    position: absolute; scale: 3; cursor: pointer; border: none;
+}
+.color-picker-wrapper i { position: relative; z-index: 1; color: white; pointer-events: none; mix-blend-mode: difference; }
+
+/* Lampu sama seperti sebelumnya */
+.lamp-container { position: absolute; top: 0; right: 10%; z-index: 10; display: flex; flex-direction: column; align-items: center; }
+.rope { width: 2px; height: 100px; background: #444; }
+.handle { width: 16px; height: 16px; background: #666; border-radius: 50%; cursor: pointer; }
+.light-bulb { width: 40px; height: 40px; background: #222; border-radius: 50%; transition: 0.4s; }
+body.light-on .light-bulb { background: #fff; box-shadow: 0 0 50px white; }

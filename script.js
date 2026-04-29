@@ -1,68 +1,58 @@
-const lampRope = document.getElementById('lampRope');
-const fileInput = document.getElementById('fileInput');
-const bgContainer = document.getElementById('bg-container');
+const rgbPicker = document.getElementById('rgbPicker');
+const panelFileInput = document.getElementById('panelFileInput');
+const panelImage = document.getElementById('panelImage');
 
-// 1. Tarik Lampu untuk Buka Login
-lampRope.addEventListener('click', () => {
-    document.body.classList.toggle('light-on');
+// 1. Ubah Warna UI (RGB)
+rgbPicker.addEventListener('input', (e) => {
+    const color = e.target.target.value; // Dapatkan warna dari picker
+    document.documentElement.style.setProperty('--main-color', color);
 });
 
-// 2. Logika Upload Foto/Video
-fileInput.addEventListener('change', function() {
+// 2. Ubah Foto Panel Login
+panelFileInput.addEventListener('change', function() {
     const file = this.files[0];
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            applyBackground(e.target.result, file.type);
+            panelImage.src = e.target.result;
         }
         reader.readAsDataURL(file);
     }
 });
 
-function applyBackground(src, type) {
-    bgContainer.innerHTML = '';
-    if (type.includes('video')) {
-        // Tanpa 'muted' agar suara terdengar
-        bgContainer.innerHTML = `<video src="${src}" autoplay loop playsinline></video>`;
-    } else {
-        bgContainer.innerHTML = `<img src="${src}">`;
-    }
+// 3. Simpan Semua (Background, Foto Panel, Warna)
+function saveAll() {
+    const bgMedia = document.getElementById('bg-container').firstChild;
+    const currentColor = getComputedStyle(document.documentElement).getPropertyValue('--main-color');
+    
+    if (bgMedia) localStorage.setItem('customBG', bgMedia.src);
+    localStorage.setItem('panelImg', panelImage.src);
+    localStorage.setItem('themeColor', currentColor.trim());
+    
+    alert('Semua pengaturan berhasil disimpan!');
 }
 
-// 3. Simpan Background ke LocalStorage
-function saveSettings() {
-    const media = bgContainer.firstChild;
-    if (media) {
-        localStorage.setItem('customBG', media.src);
-        localStorage.setItem('customBGType', media.tagName);
-        alert('Latar belakang berhasil disimpan!');
-    }
-}
-
-// Muat data saat halaman dibuka
+// 4. Muat Pengaturan Saat Refresh
 window.onload = () => {
-    const savedSrc = localStorage.getItem('customBG');
-    const savedType = localStorage.getItem('customBGType');
-    if (savedSrc) {
-        if (savedType === 'VIDEO') {
-            bgContainer.innerHTML = `<video src="${savedSrc}" autoplay loop playsinline></video>`;
-        } else {
-            bgContainer.innerHTML = `<img src="${savedSrc}">`;
-        }
+    const savedColor = localStorage.getItem('themeColor');
+    const savedPanel = localStorage.getItem('panelImg');
+    const savedBG = localStorage.getItem('customBG');
+
+    if (savedColor) {
+        document.documentElement.style.setProperty('--main-color', savedColor);
+        rgbPicker.value = savedColor;
+    }
+    if (savedPanel) panelImage.src = savedPanel;
+    if (savedBG) {
+        // Logika muat background utama tetap sama seperti sebelumnya
+        document.getElementById('bg-container').innerHTML = `<img src="${savedBG}">`;
     }
 };
 
-// 4. Mode Desktop (Fullscreen)
-function toggleDesktop() {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-    } else {
-        document.exitFullscreen();
-    }
-}
+// Fungsi pendukung lainnya (Lampu, Desktop Mode)
+document.getElementById('lampRope').onclick = () => document.body.classList.toggle('light-on');
 
-// 5. Submit Form
-document.getElementById('loginForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    alert("Berhasil Mendaftar!");
-});
+function toggleDesktop() {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+}
