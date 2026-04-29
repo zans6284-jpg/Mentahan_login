@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Transparent Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div id="bg-container"></div>
+    <div class="overlay"></div>
+
+    <div class="lamp-container">
+        <div class="lamp-rope" id="lampRope">
+            <div class="rope"></div>
+            <div class="handle"></div>
+        </div>
+        <div class="light-bulb" id="bulb"></div>
+    </div>
+
+    <div class="login-card" id="loginCard">
+        <div class="form-side">
+            <h1>Sign Up</h1>
+            <form id="loginForm">
+                <div class="input-box">
+                    <label>Email</label>
+                    <input type="email" id="email" required placeholder="example@mail.com">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="input-box">
+                    <label>Password</label>
+                    <input type="password" id="password" required placeholder="******">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <button type="submit" class="btn-submit">Sign Up</button>
+            </form>
+            <p class="footer-text">Already Have Account? <span class="login-link">Login</span></p>
+        </div>
+        <div class="image-side">
+            <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&q=80&w=500" alt="Plant Decoration">
+        </div>
+    </div>
+
+    <div class="controls">
+        <input type="file" id="fileInput" accept="image/*,video/*" hidden>
+        <button onclick="document.getElementById('fileInput').click()"><i class="fas fa-folder-open"></i> Pilih File</button>
+        <button onclick="saveSettings()"><i class="fas fa-save"></i> Save Background</button>
+        <button onclick="toggleDesktop()"><i class="fas fa-desktop"></i> Desktop Mode</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
