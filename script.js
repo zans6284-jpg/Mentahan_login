@@ -1,97 +1,81 @@
-const lampRope = document.getElementById('lampRope');
-const bgInput = document.getElementById('bgInput');
-const photoInput = document.getElementById('photoInput');
-const bgContainer = document.getElementById('bg-container');
-const loginPhoto = document.getElementById('loginPhoto');
+const body = document.body;
+const lampRope = document.getElementById('lamp-rope');
+const bgInput = document.getElementById('bg-input');
+const bgImage = document.getElementById('bg-image');
+const bgVideo = document.getElementById('bg-video');
+const cardPhotoInput = document.getElementById('card-photo-input');
+const cardPhoto = document.getElementById('card-photo');
+const saveBtn = document.getElementById('save-btn');
+const desktopBtn = document.getElementById('desktop-toggle');
 
-// 1. Tarik Lampu untuk Buka Login
+// 1. Logika Lampu Interaktif
 lampRope.addEventListener('click', () => {
-    document.body.classList.toggle('light-on');
+    body.classList.toggle('light-on');
+    // Jika ada video, nyalakan suara saat lampu nyala (interaksi user diperlukan)
+    if (body.classList.contains('light-on')) {
+        bgVideo.muted = false;
+        bgVideo.play();
+    } else {
+        bgVideo.muted = true;
+    }
 });
 
-// 2. Logika Upload Background Utama (Video/Foto)
+// 2. Logika Ganti Background (Foto/Video)
 bgInput.addEventListener('change', function() {
     const file = this.files[0];
     if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            applyBackground(e.target.result, file.type);
+        const url = URL.createObjectURL(file);
+        if (file.type.includes('video')) {
+            bgImage.style.display = 'none';
+            bgVideo.style.display = 'block';
+            bgVideo.src = url;
+            bgVideo.play();
+        } else {
+            bgVideo.style.display = 'none';
+            bgImage.style.display = 'block';
+            bgImage.src = url;
         }
-        reader.readAsDataURL(file);
     }
 });
 
-function applyBackground(src, type) {
-    bgContainer.innerHTML = '';
-    if (type.includes('video')) {
-        bgContainer.innerHTML = `<video src="${src}" autoplay loop playsinline></video>`;
-    } else {
-        bgContainer.innerHTML = `<img src="${src}">`;
-    }
-}
-
-// 3. Logika Upload Foto di Kolom Login
-photoInput.addEventListener('change', function() {
+// 3. Logika Ganti Foto di Dalam Panel Login
+cardPhotoInput.addEventListener('change', function() {
     const file = this.files[0];
     if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            applyLoginPhoto(e.target.result);
-        }
-        reader.readAsDataURL(file);
+        const url = URL.createObjectURL(file);
+        cardPhoto.src = url;
     }
 });
 
-function applyLoginPhoto(src) {
-    loginPhoto.src = src;
-}
-
-// 4. Simpan SEMUA ke LocalStorage
-function saveAllSettings() {
-    // Simpan Background Utama
-    const media = bgContainer.firstChild;
-    if (media) {
-        localStorage.setItem('customBG', media.src);
-        localStorage.setItem('customBGType', media.tagName);
-    }
-    
-    // Simpan Foto Login
-    localStorage.setItem('customLoginPhoto', loginPhoto.src);
-    
-    alert('Semua pengaturan (Background & Foto Login) berhasil disimpan!');
-}
-
-// Muat data saat halaman dibuka
-window.onload = () => {
-    // Load Background Utama
-    const savedSrc = localStorage.getItem('customBG');
-    const savedType = localStorage.getItem('customBGType');
-    if (savedSrc) {
-        if (savedType === 'VIDEO') {
-            bgContainer.innerHTML = `<video src="${savedSrc}" autoplay loop playsinline></video>`;
-        } else {
-            bgContainer.innerHTML = `<img src="${savedSrc}">`;
-        }
-    }
-    
-    // Load Foto Login
-    const savedPhoto = localStorage.getItem('customLoginPhoto');
-    if (savedPhoto) {
-        loginPhoto.src = savedPhoto;
-    }
-};
-
-// 5. Mode Desktop (Fullscreen)
-function toggleDesktop() {
+// 4. Logika Desktop Mode (Fullscreen)
+desktopBtn.addEventListener('click', () => {
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen();
+        desktopBtn.innerText = "Exit Desktop Mode";
     } else {
-        document.exitFullscreen();
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+            desktopBtn.innerText = "Desktop Mode";
+        }
     }
-}
+});
 
-// Submit Form
+// 5. Simpan Pengaturan (LocalStorage)
+// Catatan: LocalStorage hanya bisa menyimpan string kecil. 
+// Untuk menyimpan gambar/video permanen biasanya butuh server.
+// Di sini kita simpan status terahir.
+saveBtn.addEventListener('click', () => {
+    const settings = {
+        bgType: bgVideo.style.display === 'block' ? 'video' : 'image',
+        lastBg: bgVideo.style.display === 'block' ? bgVideo.src : bgImage.src,
+        innerPhoto: cardPhoto.src
+    };
+    localStorage.setItem('login_settings', JSON.stringify(settings));
+    alert('Pengaturan disimpan lokal! (Catatan: File blob hanya berlaku di sesi ini)');
+});
+
+// 6. Login Logic Simple
 document.getElementById('loginForm').addEventListener('submit', (e) => {
     e.preventDefault();
-    alert("Terima kasih telah mendaftar!");
+    alert('Sign Up Berhasil! (Ini hanya demo)');
 });
